@@ -1,0 +1,89 @@
+Message-ID: <mimetest-2@dsv.su.se>
+Date: Wed, 01 Oct 1997 04:02:00 +0200
+From: Jacob Palme <jpalme@dsv.su.se>
+MIME-Version: 1.0
+To: jptest@dsv.su.se
+Subject: Test message no. 2
+Content-Type: multipart/related; boundary="==boundary-1"; type="text/html"
+
+Text displayed only to non-MIME-compliant mailers
+--==boundary-1
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD><TITLE>Test message no. 2</TITLE>
+</HEAD>
+<BODY>
+<H1>This is test message no. 2</H1>
+
+<H2>Here comes the red test image:</H2>
+<IMG SRC="cid:part1.mimetest-2@dsv.su.se" BORDER=0 HEIGHT=32 WIDTH=117
+ALT="red test image">
+
+<H2>Here comes the yellow test image:</H2>
+<IMG SRC="cid:part2.mimetest-2@dsv.su.se" BORDER=0 HEIGHT=32 WIDTH=152
+ALT="yellow test image">
+
+<P>This is the last line of this test message.
+</BODY></HTML>
+
+--==boundary-1
+Content-Type: image/gif
+Content-ID: <part1.mimetest-2@dsv.su.se>
+Content-Transfer-Encoding: base64
+
+R0lGODlhdQAgAPcAAP//////zP//mf//Zv//M///AP/M///MzP/Mmf/MZv/MM//MAP+Z//+Z
+zP+Zmf+ZZv+ZM/+ZAP9m//9mzP9mmf9mZv9mM/9mAP8z//8zzP8zmf8zZv8zM/8zAP8A//8A
+zP8Amf8AZv8AM/8AAMz//8z/zMz/mcz/Zsz/M8z/AMzM/8zMzMzMmczMZszMM8zMAMyZ/8yZ
+zMyZmcyZZsyZM8yZAMxm/8xmzMxmmcxmZsxmM8xmAMwz/8wzzMwzmcwzZswzM8wzAMwA/8wA
+zMwAmcwAZswAM8wAAJn//5n/zJn/mZn/Zpn/M5n/AJnM/5nMzJnMmZnMZpnMM5nMAJmZ/5mZ
+zJmZmZmZZpmZM5mZAJlm/5lmzJlmmZlmZplmM5lmAJkz/5kzzJkzmZkzZpkzM5kzAJkA/5kA
+zJkAmZkAZpkAM5kAAGb//2b/zGb/mWb/Zmb/M2b/AGbM/2bMzGbMmWbMZmbMM2bMAGaZ/2aZ
+zGaZmWaZZmaZM2aZAGZm/2ZmzGZmmWZmZmZmM2ZmAGYz/2YzzGYzmWYzZmYzM2YzAGYA/2YA
+zGYAmWYAZmYAM2YAADP//zP/zDP/mTP/ZjP/MzP/ADPM/zPMzDPMmTPMZjPMMzPMADOZ/zOZ
+zDOZmTOZZjOZMzOZADNm/zNmzDNmmTNmZjNmMzNmADMz/zMzzDMzmTMzZjMzMzMzADMA/zMA
+zDMAmTMAZjMAMzMAAAD//wD/zAD/mQD/ZgD/MwD/AADM/wDMzADMmQDMZgDMMwDMAACZ/wCZ
+zACZmQCZZgCZMwCZAABm/wBmzABmmQBmZgBmMwBmAAAz/wAzzAAzmQAzZgAzMwAzAAAA/wAA
+zAAAmQAAZgAAM+4AAN0AALsAAKoAAIgAAHcAAFUAAEQAACIAABEAAADuAADdAAC7AACqAACI
+AAB3AABVAABEAAAiAAARAAAA7gAA3QAAuwAAqgAAiAAAdwAAVQAARAAAIgAAEe7u7t3d3bu7
+u6qqqoiIiHd3d1VVVURERCIiIhEREQAAACH5BAAAAAAALAAAAAB1ACAAQAj/AP8JHEiwoMGD
+CBMqXMiwocOGIyJKnEixosWLGDNq3MixY0aBFKuJrBZypMiIJ0ekrLhSpUmSKEdObMkSpsuY
+OG/qTMnzJUWQHoMKHUq0KEagRpMqXaoUaU6dG2lKlOqRKtOkTq9q3VrV5sd/XMOKZZp1rNmz
+GsuiXct2hNq2cMVmXdkzZ12LLe/ehYrXpsy/MPUGHvw04lzCdhFbzasYMd+aUxsnnrzTq1uw
+cTN3tVrxrebPWDGDHr3UM+nTHE2jXn1RNevXEl3Dfi179urDJrte5BzVcknNhyNHZiyzJnGv
+uWMuppu7uHLkyV1Kxe1ccOGZ0Cn/xshcu8/K2g2LQ8bJGPJj4eh3+/WNHb118PAtBn8aXTrn
+6s7tl2QP9b399fhNN55tbe31FYEITlRbgqAtyCBwAz5I20MUVmjhhRgyFBAAOw==
+--==boundary-1
+Content-Type: image/gif
+Content-ID: <part2.mimetest-2@dsv.su.se>
+Content-Transfer-Encoding: base64
+
+R0lGODlhmAAgAPcAAP//////zP//mf//Zv//M///AP/M///MzP/Mmf/MZv/MM//MAP+Z//+Z
+zP+Zmf+ZZv+ZM/+ZAP9m//9mzP9mmf9mZv9mM/9mAP8z//8zzP8zmf8zZv8zM/8zAP8A//8A
+zP8Amf8AZv8AM/8AAMz//8z/zMz/mcz/Zsz/M8z/AMzM/8zMzMzMmczMZszMM8zMAMyZ/8yZ
+zMyZmcyZZsyZM8yZAMxm/8xmzMxmmcxmZsxmM8xmAMwz/8wzzMwzmcwzZswzM8wzAMwA/8wA
+zMwAmcwAZswAM8wAAJn//5n/zJn/mZn/Zpn/M5n/AJnM/5nMzJnMmZnMZpnMM5nMAJmZ/5mZ
+zJmZmZmZZpmZM5mZAJlm/5lmzJlmmZlmZplmM5lmAJkz/5kzzJkzmZkzZpkzM5kzAJkA/5kA
+zJkAmZkAZpkAM5kAAGb//2b/zGb/mWb/Zmb/M2b/AGbM/2bMzGbMmWbMZmbMM2bMAGaZ/2aZ
+zGaZmWaZZmaZM2aZAGZm/2ZmzGZmmWZmZmZmM2ZmAGYz/2YzzGYzmWYzZmYzM2YzAGYA/2YA
+zGYAmWYAZmYAM2YAADP//zP/zDP/mTP/ZjP/MzP/ADPM/zPMzDPMmTPMZjPMMzPMADOZ/zOZ
+zDOZmTOZZjOZMzOZADNm/zNmzDNmmTNmZjNmMzNmADMz/zMzzDMzmTMzZjMzMzMzADMA/zMA
+zDMAmTMAZjMAMzMAAAD//wD/zAD/mQD/ZgD/MwD/AADM/wDMzADMmQDMZgDMMwDMAACZ/wCZ
+zACZmQCZZgCZMwCZAABm/wBmzABmmQBmZgBmMwBmAAAz/wAzzAAzmQAzZgAzMwAzAAAA/wAA
+zAAAmQAAZgAAM+4AAN0AALsAAKoAAIgAAHcAAFUAAEQAACIAABEAAADuAADdAAC7AACqAACI
+AAB3AABVAABEAAAiAAARAAAA7gAA3QAAuwAAqgAAiAAAdwAAVQAARAAAIgAAEe7u7t3d3bu7
+u6qqqoiIiHd3d1VVVURERCIiIhEREQAAACH5BAAAAAAALAAAAACYACAAQAj/AP8JHEiwoMGD
+CBMqXMiwocOHECMWmEixosWLGDNq3Mixo8ePIEN+FPixWrWKJlOenGgS5coCLWG+VKlSY0yW
+NCnW1PkS482YQFcGxUlU5s6MJEUqXcq0qdOnGpNCnUq1qlWlUm0K7emz502qX0WGvTo1K9mz
+aNOO7Wg2rdu3cDG2jUu3Ltm5dvPqZYp3r9+/G/u6/LmVp0vDMosO7Xo4sWPCGwmfTPm4cGXF
+XC0KbowZcdHLiNd6Br3YcUbIpC0vLi33H+DXbo+G3Ay7tl7atnPHxa27N1revoNXBS68uFPi
+xpOLRK68OVvXHFlfpIwz81PRHrGb9ku7tOyv4Kmnbu4avvxM8RbF50T//ajs1tnVW96OWnLO
+015VW9def/791fPBFx9nBPbXGH/5RXaegqHp1xloz5XEVXsFogchfueZl55oBpp2n1H2ccSc
+c4BJ59GIJKZYEYoqqshiiyS+CGNzEdVo44045qhjQwEBADs=
+--==boundary-1--
+
+
+
+
