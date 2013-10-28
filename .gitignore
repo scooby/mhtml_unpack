@@ -1,3 +1,10 @@
+# OS X crap
+.DS_Store
+
+# emacs backups
+*~
+
+# python objects
 *.py[cod]
 
 # C extensions
