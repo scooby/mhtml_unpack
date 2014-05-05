@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Tries fairly hard to repack an MHTML message into a single HTML document using data: URIs.
 
@@ -15,32 +16,117 @@ import email as em
 import sys
 import base64 as b64
 import urllib.parse as up
+import bs4  # pip install beautifulsoup4
+magic_obj = None
+try: # pip install filemagic
+    import magic
+    magic_obj = magic.Magic(flags=magic.MAGIC_NO_CHECK_TAR | magic.MAGIC_NO_CHECK_ELF | magic.MAGIC_MIME_TYPE)
+except ImportError:
+    pass
 
-import bs4  # beautiful soup 4
+import hashlib as hl
+import os.path as op
+import mimetypes as mt
 
+common_types = {
+    'text/html': '.html',
+    'text/plain': '.txt',
+    'application/octet-stream': '.data',
+    'image/jpeg': '.jpg'
+}
 
-def data(binary, content_type):
+def find_extension(mime_type):
     """
-    Creates a data URI
-    :param binary:  binary data
-    :param content_type: a mime type, e.g. foo/bar
-    :return: the data uri
+    Determine an extension for a given mime type.
     """
-    return "data:{0};base64,{1}".format(
-        content_type, b64.encodebytes(binary).decode()
-        .replace("\n", ""))
+    mime_type = mime_type.lower()
+    try:
+        ext = common_types[mime_type]
+    except KeyError:
+        exts = sorted(mt.guess_all_extensions(mime_type))
+        exts.append("")
+        ext = exts[0]
+        common_types[mime_type] = ext
+        print("  {0} -> '{1}'".format(mime_type, ext))
+    return ext
 
-def hash_mess(mess):
-    """
-    Tries to hash a message part
-    :param mess:
-    :return:
-    """
-    return hash(mess.as_string(maxheaderlen=16))
+class PartHelper:
+    def __init__(self, part):
+        self.part = part
+        mime = part.get_content_type()
+        payload = part.get_payload(decode=True)
+        if not mime or "octet-stream" in mime:
+            _mime = None
+            if magic_obj:
+                try:
+                    _mime = magic_obj.id_buffer(payload)
+                except:
+                    pass
+            if _mime:
+                mime = _mime
+        if not mime:
+            mime = ""
+        self.content_type = mime
+        self.payload = payload
+        self.extension = find_extension(mime)
+        digest = hl.sha256(payload).digest()
+        self.digest = b64.urlsafe_b64encode(digest).decode("ascii")
 
+class InlineData:
+    """
+    A mixin to represent objects using inline data URIs.
+    """
+    def data(binary, content_type):
+        """
+        Creates a data URI
+        :param binary:  binary data
+        :param content_type: a mime type, e.g. foo/bar
+        :return: the data uri
+        """
+        return "data:{0};base64,{1}".format(
+            content_type, b64.encodebytes(binary).decode()
+            .replace("\n", ""))
+
+    def render_data(self, part, seen):
+        """
+        Given a part, and a set of seen parts, render the data as a data: URI.
+        :param part: the message part.
+        :param seen: a set of seen parts.
+        :return: a URI representing the data.
+        """
+        if part is None:
+            return None
+        helper = PartHelper(part)
+        if helper.digest in seen:
+            return None
+        binary, content_type = self.render(helper, seen | {ph})
+        return self.data(binary, content_type)
+
+class DataDirectory:
+    """
+    A mixin to represent objects using a folder of data files.
+    """
+    def render_data(self, part, seen):
+        """
+        Given a part, and a set of seen parts, render the data as a relative URI.
+        :param part: the message part.
+        :param seen: a set of seen parts
+        :return: a URI representing the data.
+        """
+        if part is None:
+            return None
+        helper = PartHelper(part)
+        path = "blob={0}{1}".format(helper.digest, helper.extension)
+        if helper.digest in seen:
+            return path
+        if not op.exists(path):
+            binary, content_type = self.render(helper, seen | { helper.digest })
+            with open(path, "wb") as fh:
+                fh.write(binary)
+        return path
 
 class Mapped:
-    def __init__(self, mess):
+    def __init__(self, mess, **kw):
         """
         Walks a multipart message and builds indexes into the parts using the content-Id and content-location headers.
 
@@ -62,6 +148,8 @@ class Mapped:
             cid = part.get('Content-ID', None)
             if cid is not None:
                 self.by_id[cid] = self.by_id[cid.strip("<>")] = part
+
+        super().__init__(**kw)
 
     refs = {
         'a': ['href'],
@@ -91,30 +179,18 @@ class Mapped:
         'video': ['poster', 'src']
     }
 
-    def render_data(self, part, seen):
-        """
-
-        :param part:
-        :param seen:
-        :return:
-        """
-        if part is None:
-            return None
-        ph = hash_mess(part)
-        if ph in seen:
-            return None
-        binary, content_type = self.render(part, seen | {ph})
-        return data(binary, content_type)
-
-    def render(self, part, seen=frozenset()):
+    def render(self, helper, seen=frozenset()):
         """
         Renders a message part.
-        :param part: an individual part of a multipart mime message
+        :param helper: a helper that holds a part of a multipart mime message, or a message part
         :param seen: a set used for cycle detection
         :return: a 2-tup of (binary, mimetype), where mimetype is e.g. "text/html"
         """
-        data = part.get_payload(decode=True)
-        content_type = part.get_content_type()
+        if not isinstance(helper, PartHelper):
+            helper = PartHelper(helper)
+        data = helper.payload
+        content_type = helper.content_type
+        part = helper.part
         if content_type == "text/html":
             doc = bs4.BeautifulSoup(data)
             loc = part.get('Content-Location', "").strip()
@@ -142,12 +218,21 @@ class Mapped:
             return data.encode('utf-8'), "{0};charset=utf8".format(content_type)
         return data, content_type
 
+class MappedInline(Mapped, InlineData):
+    pass
+
+class MappedRelative(Mapped, DataDirectory):
+    pass
 
 if __name__ == '__main__':
+    if "file" in sys.argv[0]:
+        con = MappedRelative
+    else:
+        con = MappedInline
     for path in sys.argv[1:]:
         with open(path, "rb") as fp:
             mess = em.message_from_binary_file(fp)
-        mapper = Mapped(mess)
+        mapper = con(mess)
         root = None
         for start in mapper.starts:
             root = mapper.by_id.get(start, None)
@@ -161,6 +246,7 @@ if __name__ == '__main__':
         if root is None:
             print(path, ": Can't find root node", file=sys.stderr)
             continue
-        binary, ct = mapper.render(root)
-        with open(path + ".html", "wb") as fp:
+        binary, mime = mapper.render(root)
+        new_path = op.split_ext(path)[0] + ".conv.html"
+        with open(new_path, "wb") as fp:
             fp.write(binary)
