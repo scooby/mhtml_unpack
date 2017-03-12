@@ -327,6 +327,47 @@ class MappedInline(Mapped, InlineData):
 class MappedRelative(Mapped, DataDirectory):
     pass
 
+def convert_to_html(file_path,out_path):
+    '''
+    convert a mhtml to a html
+    :param file_path:   [string]
+    :param out_path:    [string]
+    :return:
+    '''
+
+    con = MappedInline
+    path = file_path
+
+    with open(path, "rb") as fp:
+        mess = em.message_from_binary_file(fp)
+    mapper = con(mess)
+    root = None
+    for start in mapper.starts:
+        root = mapper.by_id.get(start, None)
+        if root is not None:
+            break
+    if root is None:
+        for part in mess.walk():
+            if not part.is_multipart():
+                root = part
+                break
+    if root is None:
+        print(path, ": Can't find root node")
+        return False
+    binary, mime = mapper.render(PartHelper(root, 'text/html'))
+    new_path = op.splitext(path)[0] + ".conv.html"
+
+    if out_path:
+        new_path = out_path
+
+    with open(new_path, "wb") as fp:
+        fp.write(binary)
+
+    return new_path
+
+
+
+
 if __name__ == '__main__':
     if "file" in sys.argv[0]:
         con = MappedRelative
